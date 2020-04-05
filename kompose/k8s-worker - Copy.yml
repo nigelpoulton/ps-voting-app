@@ -1,0 +1,31 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: worker
+  name: worker
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: worker
+    spec:
+      containers:
+      - image: worker
+        name: worker
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: worker
+  name: worker
+spec:
+  clusterIP: None
+  ports:
+  - port: 55555
+    targetPort: 0
+  selector:
+    app: worker

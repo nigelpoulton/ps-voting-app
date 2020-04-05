@@ -1,0 +1,36 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: result
+  name: result
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: result
+    spec:
+      containers:
+      - args:
+        - nodemon
+        - --debug
+        - server.js
+        image: docker/example-voting-app-result:latest
+        name: result
+        ports:
+        - containerPort: 80
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: result
+  name: result
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+  selector:
+    app: result

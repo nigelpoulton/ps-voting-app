@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: C:\temp\forks\example-voting-app\kompose\kompose.exe convert
+    kompose.version: 1.8.0 (0c0c027)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: result
+  name: result
+spec:
+  ports:
+  - name: "5001"
+    port: 5001
+    targetPort: 80
+  - name: "5858"
+    port: 5858
+    targetPort: 5858
+  selector:
+    io.kompose.service: result
+status:
+  loadBalancer: {}

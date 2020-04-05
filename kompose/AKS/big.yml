@@ -1,0 +1,164 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: db
+  labels:
+    app: db
+spec:
+  template:
+    metadata:
+      labels:
+        app: db
+    spec:
+      containers:
+      - image: postgres:9.4
+        name: db
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: db
+spec:
+  clusterIP: None
+  ports:
+  - port: 55555
+    targetPort: 0
+  selector:
+    app: db
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: redis
+  name: redis
+spec:
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+      - image: redis:alpine
+        name: redis
+        ports:
+        - containerPort: 6379
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: redis
+  name: redis
+spec:
+  ports:
+  - port: 6379
+    targetPort: 6379
+  selector:
+    app: redis
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: vote
+  name: vote
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: vote
+    spec:
+      containers:
+      - args:
+        - python
+        - app.py
+        image: docker/example-voting-app-vote:latest
+        name: vote
+        ports:
+        - containerPort: 80
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: vote
+  name: vote
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+  selector:
+    app: vote
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: worker
+  name: worker
+spec:
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: worker
+    spec:
+      containers:
+      - image: docker/example-voting-app-worker:latest
+        name: worker
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: worker
+  name: worker
+spec:
+  clusterIP: None
+  ports:
+  - port: 55555
+    targetPort: 0
+  selector:
+    app: worker
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: result
+  name: result
+spec:
+  template:
+    metadata:
+      labels:
+        app: result
+    spec:
+      containers:
+      - args:
+        - nodemon
+        - --debug
+        - server.js
+        image: docker/example-voting-app-result:latest
+        name: result
+        ports:
+        - containerPort: 80
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: result
+  name: result
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+  selector:
+    app: result

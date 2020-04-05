@@ -1,0 +1,32 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: C:\temp\forks\example-voting-app\kompose\kompose.exe convert
+    kompose.version: 1.8.0 (0c0c027)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: result
+  name: result
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: result
+    spec:
+      containers:
+      - args:
+        - nodemon
+        - --debug
+        - server.js
+        image: result
+        name: result
+        ports:
+        - containerPort: 80
+        - containerPort: 5858
+        resources: {}
+      restartPolicy: Always
+status: {}

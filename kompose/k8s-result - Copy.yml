@@ -1,0 +1,42 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: result
+  name: result
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: result
+    spec:
+      containers:
+      - args:
+        - nodemon
+        - --debug
+        - server.js
+        image: result
+        name: result
+        ports:
+        - containerPort: 80
+        - containerPort: 5858
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: result
+  name: result
+spec:
+  type: NodePort
+  ports:
+  - name: "5001"
+    port: 5001
+    targetPort: 80
+  - name: "5858"
+    port: 5858
+    targetPort: 5858
+  selector:
+    app: result

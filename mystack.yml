@@ -1,0 +1,39 @@
+version: "3.5"
+services:
+  db:
+    image: postgres:9.4
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+      restart_policy:
+        condition: on-failure
+
+  redis:
+    image: redis:latest
+    deploy:
+      restart_policy: 
+        condition: on-failure
+
+  result:
+    image: docker/example-voting-app-result:latest
+    ports:
+      - 5001:80
+    deploy:
+      restart_policy:
+        condition: on-failure
+
+  vote:
+    image: dockersamples/examplevotingapp_vote:latest
+    ports:
+      - 5000:80
+    deploy:
+      replicas: 5
+      restart_policy:
+        condition: on-failure
+
+  worker:
+    image: dockersamples/examplevotingapp_worker
+    deploy:
+      replicas: 3
+      restart_policy:
+        condition: on-failure

@@ -1,0 +1,30 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: C:\temp\forks\example-voting-app\kompose\kompose.exe convert
+    kompose.version: 1.8.0 (0c0c027)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: vote
+  name: vote
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: vote
+    spec:
+      containers:
+      - args:
+        - python
+        - app.py
+        image: vote
+        name: vote
+        ports:
+        - containerPort: 80
+        resources: {}
+      restartPolicy: Always
+status: {}

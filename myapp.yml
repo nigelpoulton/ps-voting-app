@@ -1,0 +1,32 @@
+version: "3.5"
+
+services:
+  db:
+    image: postgres:9.4
+    restart: always
+  
+  redis:
+    image: redis
+
+  result:
+    image: docker/example-voting-app-result:latest
+    ports:
+      - '80:80'
+
+  lb:
+    image: 'dockercloud/haproxy:latest'
+    links:
+      - vote
+    ports:
+      - "80:80"
+    roles:
+      - global
+    restart: always
+
+  worker:
+    image: 'docker/example-voting-app-worker:latest'
+    restart: always
+
+  vote:
+    image: 'docker/example-voting-app-vote:latest'
+    restart: always
