@@ -15,11 +15,13 @@ services:
       restart_policy:
         condition: on-failure
   db:
-    image: postgres:9.4
+    image: postgres:9.6-alpine
     volumes:
       - db-data:/var/lib/postgresql/data
     networks:
       - backend
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
     deploy:
       placement:
         constraints: [node.role == manager]
