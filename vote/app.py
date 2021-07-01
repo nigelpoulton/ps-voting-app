@@ -6,7 +6,7 @@ import random
 import json
 
 option_a = os.getenv('OPTION_A', "Containers")
-option_b = os.getenv('OPTION_B', "VMs")
+option_b = os.getenv('OPTION_B', "Virtual Machines")
 hostname = socket.gethostname()
 
 app = Flask(__name__)

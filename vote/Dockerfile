@@ -1,5 +1,5 @@
 # Using official python runtime base image
-FROM python:3.6.10-alpine
+FROM python:3.9.6-alpine
 
 # Set the application directory
 WORKDIR /app

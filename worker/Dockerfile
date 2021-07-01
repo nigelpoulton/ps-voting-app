@@ -1,4 +1,4 @@
-FROM microsoft/dotnet:2.0.0-sdk
+FROM mcr.microsoft.com/dotnet/sdk:5.0
 
 WORKDIR /code
 
