@@ -1,5 +1,9 @@
-Example Voting App
-=========
+# Readme
+
+I'm only using the `vote` folder of this app to build an image stored [here](https://hub.docker.com/r/nigelpoulton/tu-demo)
+
+## Example Voting App
+
 
 Originally forked from [here](dockersamples/example-voting-app).
 
